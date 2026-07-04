@@ -1,0 +1,22 @@
+Snort :-
+
+sudo systemctl status snort
+   80  sudo apt-get install snort -y
+   81  cd /etc/snort
+   82  sudo vim snort.
+   83  sudo vim snort.conf 
+   84  sudo systemctl restart snort
+   85  cd rules/
+   86  sudo vim local.rules 
+
+
+for Comment all rules of snort :-
+sudo sed -i 's/^include \$RULE_PATH/#include \$RULE_PATH/' snort.conf 
+
+Live logs in console 
+sudo snort -A console -q -c snort.conf 
+
+Test
+sudo snort -T -i ens37 -c snort.conf 
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
