@@ -118,7 +118,7 @@ user & pass --> admin
 
 in Kali
 vulnerable dir to scan :-
-git clone https://github.com/digininja/DVWA.git
+https://github.com/Commando-X/vuln-bank.git
 cd DVWA 
 apt install python3-pip -y
 
