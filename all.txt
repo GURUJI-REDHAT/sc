@@ -103,6 +103,36 @@ download <remote> <local>
 NMAP :-
 
 
+The -A (Aggressive Scan) option is a shortcut that automatically enables:
+-A 
+├── -O                
+├── -sV               
+├── -sC               
+└── --traceroute      
+→ OS Detection 
+→ Version Detection 
+→ Default NSE Scripts 
+→ Traceroute
+
+
+
+sudo nmap \ -sS \ -sV \ -sC \ -O \ -A \ -p- \ --version-all \ --reason \ --traceroute \ --script "default,vuln,safe" \ -T4 \ -oA full_report \ 
+192.168.74.130
+
+
+sudo  Runs Nmap with root privileges.
+-sS – Performs a TCP SYN stealth scan.
+-sV – Detects service and software versions.
+-sC – Runs default scripts.
+-O – Detects target Operating System.
+-A – Enables OS, version, script, and traceroute detection.
+-p- – Scans all 65,335 ports.
+--version-all – Tries every available version probe.
+--reason – Shows why a port is open or closed.
+--traceroute – Maps network hops to the target.
+--script "default,vuln,safe" – Runs default, vulnerability, and safe scripts.
+-T4 – Sets aggressive speed timing.
+-oA full_report – Saves output in three file formats.
 
 
 
