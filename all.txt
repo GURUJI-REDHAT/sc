@@ -1,39 +1,63 @@
 Snort :-
 
 sudo systemctl status snort
-   80  sudo apt-get install snort -y
-   81  cd /etc/snort
-   82  sudo vim snort.
-   83  sudo vim snort.conf 
-   84  sudo systemctl restart snort
-   85  cd rules/
-   86  sudo vim local.rules 
+sudo apt-get install snort -y
+192.168.74.0/24   
+cd /etc/snort
+sudo vim snort.conf 
 
+   search  /Home_NET  (give ip)
+   ipvar External_NET !$HOME_NET
+
+sudo systemctl restart snort
+cd rules/
 
 for Comment all rules of snort :-
 sudo sed -i 's/^include \$RULE_PATH/#include \$RULE_PATH/' snort.conf 
 
-Live logs in console 
-sudo snort -A console -q -c snort.conf 
-
-Test
-sudo snort -T -i ens37 -c snort.conf 
+sudo vim local.rules 
 
 Rules 
 
 alert icmp any any -> $HOME_NET any (msg:"ICMP Ping Detected"; sid:1000001; rev:1;)   
 alert tcp any any -> $HOME_NET 80 (msg:"Suspicious User-Agent"; content:"evilbot"; http_header; sid:1000002; rev:1;)
 alert ip any any -> any any (msg:"Potential MAC Flooding - High Packet Rate"; detection_filter: track by_src, count 1000, seconds 10; sid:1000010; rev:1;)
-alert tcp any any -> $HOME_NET any (msg:"SYN Flood Attack Detected (Single Source)"; flags:S; detection_filter:track by_src, count 10, seconds 5; sid:1000020; rev:1;)  
+alert tcp any any -> $HOME_NET any (msg:"SYN Flood Attack Detected (Single Source)"; flags:S; detection_filter:track by_src, count 10, seconds 5; sid:1000020; rev:1;) 
+
+
+sudo systemctl restart snort
+sudo systemctl reload snort
+
+cd ..
+#Test
+sudo snort -T -i ens37 -c snort.conf 
+
+#Live logs in console 
+sudo snort -A console -q -c snort.conf 
+
+#ping and seen output
+ 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Nagios NCPA Client :-
 
+open nagious in browser 
+configuration -> configuration wizards 
+search -> Linux /Windowa (Select NCPA Wala)
+
+go to download -> scroll down select Linux -> select DEB vala
+in client ubuntu 
+sudo su
+ copy all and install in client ubuntu 
+
+-----------or ------------------
+
 Installation of Nagios Repo
 Execute the following commands:
 
+sudo su
 apt-get install apt-transport-https
 sudo mkdir -m 0755 -p /etc/apt/keyrings/
 
@@ -55,19 +79,51 @@ wget -qO - https://repo.nagios.com/GPG-KEY-NAGIOS-V3 | apt-key add -
 apt-get update
 Installation and Upgrade of NCPA
 apt-get install ncpa
+
+
+# then imp COmmand
+
+sudo vim /usr/local/ncpa/etc/ncpa.cfg
+search -> /community_string 
+then edit it to 
+community_string = redhat
+
+sudo systemctl restart ncpa
+sudo systemctl reload ncpa
+
+
+# then go to nagious browser and enter requirments 
+ip
+port 5693
+token = redhat
+select = ubuntu
+
+then select all and finish
+go tath 2 link and screen shot done 
+
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 Sonarqube :-
 
 pull and run docker Image :-
-
+docker container prune
+docker ps -a
 docker pull sonarqube:community
-docker run -d --rm --name sonar-api --restart unless-stopped -p 9000:9000 sonarqube:community
-
+docker run -d  --name sonar-api --restart unless-stopped -p 9000:9000 sonarqube:community
+#go to browser 127.0.0.1:9000
 Access Web :-
-user / pass --> admin
+user & pass --> admin
 
+#Local project -> give name -> is coustom -> creat project-> locally-> geenerqate -> copy -> continue -> 2 main pyhton 
+
+in Kali
 vulnerable dir to scan :-
 git clone https://github.com/digininja/DVWA.git
+cd DVWA 
+apt install python3-pip -y
+
+and run command from sonar cube web portal given in python 
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -145,7 +201,3 @@ sudo  Runs Nmap with root privileges.
 --script "default,vuln,safe" – Runs default, vulnerability, and safe scripts.
 -T4 – Sets aggressive speed timing.
 -oA full_report – Saves output in three file formats.
-
-
-
-
