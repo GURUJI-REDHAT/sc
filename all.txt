@@ -55,7 +55,19 @@ wget -qO - https://repo.nagios.com/GPG-KEY-NAGIOS-V3 | apt-key add -
 apt-get update
 Installation and Upgrade of NCPA
 apt-get install ncpa
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+Sonarqube :-
 
+pull and run docker Image :-
+
+docker pull sonarqube:community
+docker run -d --rm --name sonar-api --restart unless-stopped -p 9000:9000 sonarqube:community
+
+Access Web :-
+user / pass --> admin
+
+vulnerable dir to scan :-
+git clone https://github.com/digininja/DVWA.git
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
